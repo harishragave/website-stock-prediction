@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>stock</title>
+    <link rel="stylesheet" href="assets\css\c.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+    <img src="assets/image/kk.png" class="logo">
+    <div class="tools">
+        <a href="D:\final\index.html" >Home</a>
+        <a href="#" onclick="scrollToSection('about')">About</a>
+        <a href="#" onclick="scrollToSection('contact')">Contact</a>
+    </div>
+</div>
+
+<div class="container1">
+    <div class="container-graph">
+        <div class="graph-price">
+            <div class="graph">
+                <div class="price-s">
+                    <h1>Current Price:</h1>
+                    <h1>Predicted price:</h1>
+                </div>
+                <img src="assets/image/Nifty_50.png">
+            </div>
+            <div id="chart" class="price"></div>
+        </div>
+    </div>
+
+</div>
+<div class="container2">
+    <div class="contents">
+            <div class="about" id="about">
+                <h1>About:</h1>
+                <p>Welcome to STOCKPRICE! We are a team of three dedicated members who have developed a cutting-edge stock price prediction model. Our goal is to provide accurate and timely insights into stock market trends. Our model utilizes advanced machine learning algorithms to analyze historical stock data and predict future price movements. By incorporating real-time data updates, we aim to provide valuable information to investors and traders. We continuously strive to improve our model and deliver reliable predictions to our users.</p>
+            </div>
+            <div class="contact" id="contact">
+                <div class="details">
+                    <h1>Contact:</h1>
+                    <p>Phone No: 9876543210</p>
+                    <p><br></p>
+                    <p>Email: abc@gmail.com</p>
+                </div>
+                <img src="assets/image/kk.png" class="blogo">
+            </div>
+    </div>
+
+</div>
+<script>
+    // Create WebSocket connection
+    const socket = new WebSocket('ws://localhost:8765');
+
+    // Initialize empty arrays for x and y data
+    var xData = [];
+    var yData = [];
+
+    // Plotly chart setup
+    var layout = {
+       
+        xaxis: {
+            title: {
+                text: 'Time',
+                font: {
+                    color: 'white' 
+                },
+                standoff: 20
+            },
+            tickfont: {
+            color: 'white' 
+            },
+            showgrid: false, 
+            linecolor: 'white',
+            type: 'date', // Set x-axis type to date
+            tickformat: '%H:%M:%S', // Format for displaying time
+            rangemode: 'tozero' // Set the range mode to "tozero"
+        },
+        yaxis: {
+            title: {
+                text: 'Price',
+                font: {
+                    color: 'white' 
+                },
+                standoff: 20
+            },
+            tickfont: {
+                color: 'white' 
+            },
+            showgrid: false, 
+            linecolor: 'white',
+            tickformat: ',.0f'
+            },
+        plot_bgcolor: 'rgba(200, 200, 200, 0.0)', 
+        paper_bgcolor: 'rgba(0, 0, 0, 0)',
+        
+    };
+
+    var trace = {
+        x: xData,
+        y: yData,
+        mode: 'lines',
+        type: 'scatter',
+        name: 'Nifty50 Price',
+        line: {
+            color: 'blue' 
+        }
+        
+    };
+
+    var data = [trace];
+    
+    var config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('chart', data, layout);
+
+    function resizePlot() {
+        var chartDiv = document.getElementById('chart');
+        var width = chartDiv.clientWidth;
+        var height = chartDiv.clientHeight;
+
+        Plotly.relayout('chart', {
+            width: width,
+            height: height
+        });
+    }
+
+    // WebSocket message event listener
+    socket.onmessage = function(event) {
+        var dataPoint = event.data.split(',');
+        var timestamp = new Date(parseFloat(dataPoint[0]) * 1000); // Convert timestamp to JavaScript Date object
+        var price = parseFloat(dataPoint[1]);
+        console.log("price", price)
+        console.log("timestamp", timestamp)
+        // Append new data point to arrays
+        xData.push(timestamp);
+        yData.push(price);
+
+        // Update plot with new data
+        Plotly.update('chart', data, layout);
+        
+        // Resize x-axis range
+        var currentTime = timestamp.getTime();
+        var xRange = [
+            new Date(currentTime - 10 * 60 * 1000), // 10 minutes before
+            new Date(currentTime + 3 * 60 * 1000)   // 2 minutes after
+        ];
+        Plotly.relayout('chart', {'xaxis.range': xRange});
+    };
+    window.onresize = function(event) {
+        resizePlot();
+    };
+    function scrollToSection(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+</script>
+</body>
+</html>

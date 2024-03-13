@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <title>stock</title>
+        <link rel="stylesheet" href="assets\css\style.css">
+    </head>
+        <body>
+            <div class="container">
+                <div class="navbar">
+                    <img src="assets/image/kk.png" class="logo">
+                    <div class="nav_tar">
+                        <nav>
+                            <ul>
+                                <li><a href ="hero">HOME</a></li>
+                                <li><a href ="about">ABOUT</a></li>
+                                <li><a href ="contact">CONTACT</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="nav_r">
+                        <i class="fas fa-bars"></i> <!-- Use "fas" for Font Awesome version 5 or "fa-solid" for version 6 -->
+                    </div>
+                </div>
+            <div class="dropdown">
+                    
+                    <li><a href ="hero">HOME</a></li>
+                    <li><a href ="about">ABOUT</a></li>
+                    <li><a href ="contact">CONTACT</a></li>
+                    
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h1>Stock Market</h1>
+                        <p>Welcome to our stock market website. Here you can
+                        find information about stocks, market trends, and much more.</p>
+                        <button type="button">explore</button>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <a href="Nifty50/c.html"><button type ="button"><h5>NIFTYBANK</h5></button></a>                     
+                            <p>Get the latest updates on <b>Nifty Bank</b></p>
+                        </div>
+                        <div class="card">
+                            <button type ="button" herf=""><h5>NIFTY50</h5></button>                 
+                            <p>Get the latest updates on <b>NIFTY50</b></p>
+                        </div>
+                        <div class="card">
+                            <button type ="button"><h5>TATAMOTORS</h5></button>       
+                            <br>               
+                            <p>Get the latest updates on <b>TATAMOTORS</b></p>
+                        </div>
+                        <div class="card">
+                            <button type ="button"><h5>ITC MONTH FUT</h5></button>
+                            <br>
+                            <p>Get the latest updates on <b>ITC MONTH FUT</b><b></b></p>
+                        </div>
+
+                    </div>
+                </div>                  
+            </div>
+            <script>
+                const toggleBtn = document.querySelector('.nav_r')
+                const toggleBtncon = document.querySelector('.nav_r i')
+                const dropDown = document.querySelector('.dropdown')
+
+                toggleBtn.onclick=function(){
+                    dropDown.classList.toggle('open')
+                    const isopen =dropDown.classList.contains('open')
+
+                    toggleBtncon.classList= isopen
+                    ? 'fas fa-xmark'
+                    : 'fas fa-bars'
+                }
+            </script>
+        </body>
+
+</html>
